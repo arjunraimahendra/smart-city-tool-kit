@@ -1,7 +1,8 @@
 import streamlit as st
 import os
-from prompts import policy_levers, max_num_queries, user_provided_institutions
+from prompts import policy_levers, max_num_queries
 from utils import generate_document_contents, generate_stakeholders
+import subprocess
 
 # Set page configuration
 st.set_page_config(
@@ -38,7 +39,8 @@ if st.session_state.page == "indicators":
     
     # Run the provided Streamlit indicator app
     # st.write("Executing `main_v4.py` and `search_v4.py`...")
-    os.system(f"streamlit run indicators.py")
+    # os.system(f"streamlit run indicators.py")
+    subprocess.Popen(["streamlit", "run", "indicators.py"])
 
 elif st.session_state.page == "policy_levers":
     st.subheader("⚙️ Policy Levers")
