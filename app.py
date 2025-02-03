@@ -11,7 +11,7 @@ st.set_page_config(
 )
 
 # Title
-st.title("Smart City Tool Kit - Indicators, Policy Levers and Diagnostic Report Generator")
+st.title("Diagnostic Report Generator")
 
 # Navigation logic
 if "page" not in st.session_state:
