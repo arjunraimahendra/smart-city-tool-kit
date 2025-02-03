@@ -1,1 +1,1 @@
-# smart-city-tool-kit
+# Smart City Tool Kit
