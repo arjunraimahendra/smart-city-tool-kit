@@ -6,7 +6,7 @@ import subprocess
 
 # Set page configuration
 st.set_page_config(
-    page_title="Smart City Tool Kit",
+    page_title="Diagnostic Report Generator",
     layout="wide"
 )
 
