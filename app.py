@@ -13,6 +13,18 @@ st.set_page_config(
 # Title
 st.title("Smart City Tool Kit - Indicators, Policy Levers and Comprehensive Diagnostic Reporting")
 
+# Navigation logic
+if "page" not in st.session_state:
+    st.session_state.page = "home"
+if "stakeholders_list" not in st.session_state:
+    st.session_state.stakeholders_list = []
+if "generated_stakeholders" not in st.session_state:
+    st.session_state.generated_stakeholders = ""
+if "toc" not in st.session_state:
+    st.session_state.toc = ""
+if "modify_toc" not in st.session_state:
+    st.session_state.modify_toc = True
+
 # Main navigation buttons
 st.subheader("Choose a Functionality:")
 col1, col2, col3 = st.columns(3)
@@ -20,31 +32,22 @@ col1, col2, col3 = st.columns(3)
 with col1:
     if st.button("📊 Indicators", key="indicators"):
         st.session_state.page = "indicators"
-        # st.rerun()
+        st.rerun()
 
 with col2:
     if st.button("⚙️ Policy Levers", key="policy_levers"):
         st.session_state.page = "policy_levers"
-        # st.rerun()
+        st.rerun()
 
 with col3:
     if st.button("📋 Complete Diagnostic Reporting", key="diagnostic"):
         st.session_state.page = "diagnostic"
-        # st.rerun()
+        st.rerun()
 
-# Navigation logic
-if "page" not in st.session_state:
-    st.session_state.page = "home"
+
 
 if st.session_state.page == "indicators":
-    st.subheader("📊 Smart City Indicators Calculator")
-    st.write("Launching the indicators application...")
-    
     # Run the provided Streamlit indicator app
-    # st.write("Executing `main_v4.py` and `search_v4.py`...")
-    # os.system(f"streamlit run indicators.py")
-    # subprocess.Popen(["streamlit", "run", "indicators.py"])
-    # st.components.v1.iframe("https://smart-city-indicators-wb.streamlit.app/", height=800, scrolling=True)
     st.switch_page("pages/indicators.py")
 
 elif st.session_state.page == "policy_levers":
@@ -57,42 +60,44 @@ elif st.session_state.page == "policy_levers":
 elif st.session_state.page == "diagnostic":
     st.subheader("📋 Smart City Diagnostic Report Generation")
 
-    # Inputs for Region, Country, City
-    # region = st.text_input("🌍 Enter Region:")
+    # Inputs for Country, City
     country = st.text_input("🏳️ Enter Country:")
     city = st.text_input("🏙️ Enter City:")
 
     # Stakeholder selection
-    stakeholders = ""
     st.subheader("Stakeholder Selection")
     stakeholder_option = st.radio("Would you like to provide stakeholders or generate them using AI?", 
                                   ("Provide stakeholders", "Generate using AI"))
 
     if stakeholder_option == "Provide stakeholders":
         stakeholders = st.text_area("Enter stakeholders (comma-separated)")
-        stakeholder_button = st.button("Get Stakeholders")
-        if stakeholders.strip():
-            stakeholders_list = stakeholders.split(",")
-            if stakeholder_button:
-                for stakeholder in stakeholders_list:
-                    st.write(f"- {stakeholder}")
-    else:
-        stakeholder_button = st.button("Get Stakeholders")
-        if stakeholder_button:
+        if st.button("Get Stakeholders"):
+            if stakeholders.strip():
+                st.session_state.stakeholders_list = stakeholders.split(",")
+                st.rerun()
+    
+    # Display manually entered stakeholders
+    if st.session_state.stakeholders_list:
+        st.subheader("✅ Provided Stakeholders")
+        for stakeholder in st.session_state.stakeholders_list:
+            st.write(f"- {stakeholder}")
+
+    elif stakeholder_option == "Generate using AI":
+        if st.button("Get Stakeholders"):
             with st.spinner("Generating the Stakeholders"):
-                stakeholders = generate_stakeholders(city=city, country=country)
-            st.markdown(stakeholders)
+                st.session_state.generated_stakeholders = generate_stakeholders(city=city, country=country)
+            st.rerun()
+
+    # Display AI-generated stakeholders
+    if st.session_state.generated_stakeholders:
+        st.subheader("✅ AI-Generated Stakeholders")
+        st.markdown(st.session_state.generated_stakeholders)
 
     # Report Structure and Framework
     st.subheader("Report Structure and Framework")
     report_structure = st.text_area("Describe the structure and framework of the report:")
 
-    # Initialize Table of Contents if not already generated
-    if "toc" not in st.session_state:
-        st.session_state.toc = ""
-
-    if "modify_toc" not in st.session_state:
-        st.session_state.modify_toc = True
+    
 
     # Generate Table of Contents
     if st.button("📑 Generate Table of Contents"):
@@ -100,7 +105,9 @@ elif st.session_state.page == "diagnostic":
             st.session_state.toc = generate_document_contents(city=city, 
                                                               country=country, 
                                                               policy_levers=policy_levers, 
-                                                              stakeholders=stakeholders, 
+                                                              stakeholders=(", ".join(st.session_state.stakeholders_list) 
+                                                                           if stakeholder_option == "Provide stakeholders" 
+                                                                           else st.session_state.generated_stakeholders), 
                                                               report_structure=report_structure,
                                                               max_num_queries=max_num_queries)
             
@@ -126,7 +133,9 @@ elif st.session_state.page == "diagnostic":
                         st.session_state.toc = generate_document_contents(city=city, 
                                                                           country=country, 
                                                                           policy_levers=policy_levers, 
-                                                                          stakeholders=stakeholders, 
+                                                                          stakeholders=(", ".join(st.session_state.stakeholders_list) 
+                                                                           if stakeholder_option == "Provide stakeholders" 
+                                                                           else st.session_state.generated_stakeholders), 
                                                                           report_structure=extra_inputs,
                                                                           max_num_queries=max_num_queries)
                     st.session_state.modify_toc = True
