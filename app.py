@@ -20,14 +20,17 @@ col1, col2, col3 = st.columns(3)
 with col1:
     if st.button("📊 Indicators", key="indicators"):
         st.session_state.page = "indicators"
+        # st.rerun()
 
 with col2:
     if st.button("⚙️ Policy Levers", key="policy_levers"):
         st.session_state.page = "policy_levers"
+        # st.rerun()
 
 with col3:
     if st.button("📋 Complete Diagnostic Reporting", key="diagnostic"):
         st.session_state.page = "diagnostic"
+        # st.rerun()
 
 # Navigation logic
 if "page" not in st.session_state:
@@ -41,7 +44,8 @@ if st.session_state.page == "indicators":
     # st.write("Executing `main_v4.py` and `search_v4.py`...")
     # os.system(f"streamlit run indicators.py")
     # subprocess.Popen(["streamlit", "run", "indicators.py"])
-    st.components.v1.iframe("https://smart-city-indicators-wb.streamlit.app/", height=800, scrolling=True)
+    # st.components.v1.iframe("https://smart-city-indicators-wb.streamlit.app/", height=800, scrolling=True)
+    st.switch_page("pages/indicators.py")
 
 elif st.session_state.page == "policy_levers":
     st.subheader("⚙️ Policy Levers")
