@@ -40,7 +40,8 @@ if st.session_state.page == "indicators":
     # Run the provided Streamlit indicator app
     # st.write("Executing `main_v4.py` and `search_v4.py`...")
     # os.system(f"streamlit run indicators.py")
-    subprocess.Popen(["streamlit", "run", "indicators.py"])
+    # subprocess.Popen(["streamlit", "run", "indicators.py"])
+    st.components.v1.iframe("https://smart-city-indicators-wb.streamlit.app/", height=800, scrolling=True)
 
 elif st.session_state.page == "policy_levers":
     st.subheader("⚙️ Policy Levers")
