@@ -40,7 +40,7 @@ with col2:
         st.rerun()
 
 with col3:
-    if st.button("📋 Diagnostic Report Generator", key="diagnostic"):
+    if st.button("📋 Diagnostic Report", key="diagnostic"):
         st.session_state.page = "diagnostic"
         st.rerun()
 
