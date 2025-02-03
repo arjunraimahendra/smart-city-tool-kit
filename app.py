@@ -56,6 +56,7 @@ elif st.session_state.page == "diagnostic":
     city = st.text_input("🏙️ Enter City:")
 
     # Stakeholder selection
+    stakeholders = ""
     st.subheader("Stakeholder Selection")
     stakeholder_option = st.radio("Would you like to provide stakeholders or generate them using AI?", 
                                   ("Provide stakeholders", "Generate using AI"))
