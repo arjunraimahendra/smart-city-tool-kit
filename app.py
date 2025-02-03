@@ -11,7 +11,7 @@ st.set_page_config(
 )
 
 # Title
-st.title("Smart City Tool Kit - Indicators, Policy Levers and Comprehensive Diagnostic Reporting")
+st.title("Smart City Tool Kit - Indicators, Policy Levers and Diagnostic Report Generator")
 
 # Navigation logic
 if "page" not in st.session_state:
@@ -40,7 +40,7 @@ with col2:
         st.rerun()
 
 with col3:
-    if st.button("📋 Complete Diagnostic Reporting", key="diagnostic"):
+    if st.button("📋 Diagnostic Report Generator", key="diagnostic"):
         st.session_state.page = "diagnostic"
         st.rerun()
 
